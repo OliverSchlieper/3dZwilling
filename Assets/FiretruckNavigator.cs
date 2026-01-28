@@ -1,33 +1,49 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using System.Collections;
 
 public class FiretruckNavigator : MonoBehaviour
 {
-    [Header("References")]
+    [Header("Core References")]
     [Tooltip("Drag the Firetruck object here (e.g., Firetruck1).")]
     public Transform firetruck;
 
     [Tooltip("Drag the Target object here (e.g., TooltipWorldspace inside Hoverstate).")]
     public Transform targetLocation;
 
+    [Header("Demo Sequence Objects")]
+    [Tooltip("The Hoverstate object that should appear first.")]
+    public GameObject hoverStateObject;
+
+    [Tooltip("The object inside the firetruck that changes color (e.g., FT1Tooltip). Can be SpriteRenderer, MeshRenderer, or UI Image.")]
+    public GameObject tooltipObject;
+
     [Header("Input")]
-    [Tooltip("Map this to the B button. Recommendation: Use 'Player/Jump' or create a specific action for 'Secondary Button'.")]
+    [Tooltip("Map this to the B button. Recommendation: 'Player/Jump'.")]
     public InputActionProperty moveTriggerAction;
 
+    [Header("Sequence Settings")]
+    public float delayBeforeColor = 1.0f;
+    public float delayBeforeMove = 1.0f;
+    public Color signalReceivedColor = Color.green;
+
     [Header("Movement Settings")]
-    [Tooltip("Speed of the firetruck in meters per second.")]
     public float speed = 5.0f;
-    
-    [Tooltip("How close the truck needs to be to stop.")]
     public float stoppingDistance = 0.05f;
 
+    // Internal State
+    private bool isSequenceActive = false;
     private bool isMoving = false;
-    private Vector3 currentDestination;
+    
     private Vector3 startPosition;
     private Quaternion startRotation;
-    
-    // State tracking: true = at target/moving to target, false = at start/moving to start
-    private bool isAtTarget = false; 
+    private Color originalTooltipColor;
+    private Coroutine sequenceCoroutine;
+
+    // Helpers to handle different renderer types
+    private Renderer targetRenderer;
+    private Image targetImage;
 
     private void OnEnable()
     {
@@ -45,86 +61,129 @@ public class FiretruckNavigator : MonoBehaviour
     {
         if (firetruck != null)
         {
-            // Remember where we started so we can go back
             startPosition = firetruck.position;
             startRotation = firetruck.rotation;
+        }
+
+        // Cache Tooltip Renderer/Image and original color
+        if (tooltipObject != null)
+        {
+            targetRenderer = tooltipObject.GetComponent<Renderer>();
+            targetImage = tooltipObject.GetComponent<Image>();
+
+            if (targetRenderer != null) originalTooltipColor = targetRenderer.material.color;
+            else if (targetImage != null) originalTooltipColor = targetImage.color;
+        }
+
+        // Ensure Hoverstate starts hidden
+        if (hoverStateObject != null)
+        {
+            hoverStateObject.SetActive(false);
         }
     }
 
     void Update()
     {
-        // 1. Check Input
+        // Check Toggle Input
         if (moveTriggerAction.action != null && moveTriggerAction.action.WasPressedThisFrame())
         {
-            if (firetruck != null && targetLocation != null)
+            if (isSequenceActive)
             {
-                ToggleDestination();
+                ResetSequence();
             }
             else
             {
-                Debug.LogError("FiretruckNavigator: Missing Firetruck or Target references!");
+                StartCoroutine(PlayDemoSequence());
             }
         }
 
-        // 2. Handle Movement
-        if (isMoving && firetruck != null)
+        // Handle Movement per frame
+        if (isMoving && firetruck != null && targetLocation != null)
         {
             MoveToDestination();
         }
     }
 
-    void ToggleDestination()
+    IEnumerator PlayDemoSequence()
     {
-        if (!isAtTarget)
+        isSequenceActive = true;
+        Debug.Log("FiretruckNavigator: Sequence Started.");
+
+        // 1. Show HoverState
+        if (hoverStateObject != null)
         {
-            // Go to Target
-            currentDestination = targetLocation.position;
-            isAtTarget = true;
-            isMoving = true;
-            Debug.Log("FiretruckNavigator: Moving to Target.");
+            hoverStateObject.SetActive(true);
+            Debug.Log("FiretruckNavigator: HoverState Visible.");
         }
-        else
+
+        yield return new WaitForSeconds(delayBeforeColor);
+
+        // 2. Change Tooltip Color
+        if (tooltipObject != null)
         {
-            // Reset to Start DESTINATION instantly
-            // We don't "move" there, we teleport.
-            if (firetruck != null)
-            {
-                firetruck.position = startPosition;
-                firetruck.rotation = startRotation;
-            }
-            
-            isAtTarget = false;
-            isMoving = false; // Stop moving logic since we are already there
-            Debug.Log("FiretruckNavigator: Instantly reset to Start.");
+            SetTooltipColor(signalReceivedColor);
+            Debug.Log("FiretruckNavigator: Signal Received (Green).");
         }
+
+        yield return new WaitForSeconds(delayBeforeMove);
+
+        // 3. Start Moving
+        isMoving = true;
+        Debug.Log("FiretruckNavigator: Truck Moving.");
+    }
+
+    void ResetSequence()
+    {
+        StopAllCoroutines();
+        isSequenceActive = false;
+        isMoving = false;
+
+        // 1. Instant Reset Position
+        if (firetruck != null)
+        {
+            firetruck.position = startPosition;
+            firetruck.rotation = startRotation;
+        }
+
+        // 2. Hide HoverState
+        if (hoverStateObject != null)
+        {
+            hoverStateObject.SetActive(false);
+        }
+
+        // 3. Revert Color
+        if (tooltipObject != null)
+        {
+            SetTooltipColor(originalTooltipColor);
+        }
+
+        Debug.Log("FiretruckNavigator: Reset Complete.");
+    }
+
+    void SetTooltipColor(Color color)
+    {
+        if (targetRenderer != null) targetRenderer.material.color = color;
+        else if (targetImage != null) targetImage.color = color;
     }
 
     void MoveToDestination()
     {
-        // Calculate target position with the SAME height (Y) as the firetruck's current height
-        Vector3 flatDestination = new Vector3(currentDestination.x, firetruck.position.y, currentDestination.z);
-
-        // Move towards that flat destination
+        Vector3 flatDestination = new Vector3(targetLocation.position.x, firetruck.position.y, targetLocation.position.z);
         float step = speed * Time.deltaTime;
+        
         firetruck.position = Vector3.MoveTowards(firetruck.position, flatDestination, step);
 
-        // Calculate direction for rotation (ignoring Y)
         Vector3 direction = (flatDestination - firetruck.position).normalized;
-
         if (direction.magnitude > 0.001f)
         {
             Quaternion targetRotation = Quaternion.LookRotation(direction);
             firetruck.rotation = Quaternion.RotateTowards(firetruck.rotation, targetRotation, speed * 100 * Time.deltaTime);
         }
 
-        // Check availability
         if (Vector3.Distance(firetruck.position, flatDestination) < stoppingDistance)
         {
-            // Snap to exact position
             firetruck.position = flatDestination; 
-            isMoving = false;
-            
-            Debug.Log("FiretruckNavigator: Reached destination.");
+            isMoving = false; // Stay there
         }
     }
 }
