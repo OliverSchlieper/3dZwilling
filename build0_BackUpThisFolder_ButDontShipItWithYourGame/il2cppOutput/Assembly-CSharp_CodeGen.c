@@ -1,0 +1,99 @@
+﻿#include "pch-c.h"
+
+
+#include "codegen/il2cpp-codegen-metadata.h"
+
+
+
+
+
+extern void FiretruckNavigator_OnEnable_m6FA1725836882C1C58DB153593058B0DEBCCAA29 (void);
+extern void FiretruckNavigator_OnDisable_m8FEF2913A6E6A0707EF77B3FD8D863202471811D (void);
+extern void FiretruckNavigator_Start_mED8504AE1E7BAB3D07D75049C4AD89C19DED3EC3 (void);
+extern void FiretruckNavigator_Update_mFC664CB49EEFBC2ECF7EE7098A46D9F3A5DE2A65 (void);
+extern void FiretruckNavigator_ToggleDestination_m40A0CF7CEF3A42637227C0C2CE6F2591C17B91E8 (void);
+extern void FiretruckNavigator_MoveToDestination_mA5419A8B418C677BE84E073EB119D7E99859F11F (void);
+extern void FiretruckNavigator__ctor_m54C550D804C83B5913ABD96B4691EDF1952A7FFB (void);
+extern void FloorManager_OnEnable_m8BD14AA500AEBE415E1A3E729B80F9F5CE677DD2 (void);
+extern void FloorManager_OnDisable_m6A05D7EF09D9B157D45D5F803416FC9525CB6C2C (void);
+extern void FloorManager_Start_m56093F1A3430DC8200CAAC6507012A90525E3CCF (void);
+extern void FloorManager_Update_m48C4F39D5D8037E604D35BA3CDA28D46C1844D39 (void);
+extern void FloorManager_ChangeFloor_m66E33243A2145E972109E4B0FFF72FC250CACA86 (void);
+extern void FloorManager_UpdateVisibility_mFDAFF17487F730715C3D75839B52280BAF7A3798 (void);
+extern void FloorManager__ctor_m7AA977075C58B22730E0F38740183F79D796C900 (void);
+extern void ObjectVisibilityToggle_OnEnable_mCD697BB14DD13E59CD5705F24D8F11BE57D172C1 (void);
+extern void ObjectVisibilityToggle_OnDisable_mCC52BA99E50B7927C1BA3DFE035FE4BC27CBF810 (void);
+extern void ObjectVisibilityToggle_Start_m115759F8CC618BDA65E58944A7930D9109DAFB5D (void);
+extern void ObjectVisibilityToggle_Update_m91AE04A140EC3BFE4B35ABFF9B6D05FEB13414E4 (void);
+extern void ObjectVisibilityToggle__ctor_mDD20C9A3BA3C30C47653836F048F124D752EEDC9 (void);
+extern void UnitySourceGeneratedAssemblyMonoScriptTypes_v1_Get_mBEB95BEB954BB63E9710BBC7AD5E78C4CB0A0033 (void);
+extern void UnitySourceGeneratedAssemblyMonoScriptTypes_v1__ctor_mE70FB23ACC1EA12ABC948AA22C2E78B2D0AA39B1 (void);
+static Il2CppMethodPointer s_methodPointers[21] = 
+{
+	FiretruckNavigator_OnEnable_m6FA1725836882C1C58DB153593058B0DEBCCAA29,
+	FiretruckNavigator_OnDisable_m8FEF2913A6E6A0707EF77B3FD8D863202471811D,
+	FiretruckNavigator_Start_mED8504AE1E7BAB3D07D75049C4AD89C19DED3EC3,
+	FiretruckNavigator_Update_mFC664CB49EEFBC2ECF7EE7098A46D9F3A5DE2A65,
+	FiretruckNavigator_ToggleDestination_m40A0CF7CEF3A42637227C0C2CE6F2591C17B91E8,
+	FiretruckNavigator_MoveToDestination_mA5419A8B418C677BE84E073EB119D7E99859F11F,
+	FiretruckNavigator__ctor_m54C550D804C83B5913ABD96B4691EDF1952A7FFB,
+	FloorManager_OnEnable_m8BD14AA500AEBE415E1A3E729B80F9F5CE677DD2,
+	FloorManager_OnDisable_m6A05D7EF09D9B157D45D5F803416FC9525CB6C2C,
+	FloorManager_Start_m56093F1A3430DC8200CAAC6507012A90525E3CCF,
+	FloorManager_Update_m48C4F39D5D8037E604D35BA3CDA28D46C1844D39,
+	FloorManager_ChangeFloor_m66E33243A2145E972109E4B0FFF72FC250CACA86,
+	FloorManager_UpdateVisibility_mFDAFF17487F730715C3D75839B52280BAF7A3798,
+	FloorManager__ctor_m7AA977075C58B22730E0F38740183F79D796C900,
+	ObjectVisibilityToggle_OnEnable_mCD697BB14DD13E59CD5705F24D8F11BE57D172C1,
+	ObjectVisibilityToggle_OnDisable_mCC52BA99E50B7927C1BA3DFE035FE4BC27CBF810,
+	ObjectVisibilityToggle_Start_m115759F8CC618BDA65E58944A7930D9109DAFB5D,
+	ObjectVisibilityToggle_Update_m91AE04A140EC3BFE4B35ABFF9B6D05FEB13414E4,
+	ObjectVisibilityToggle__ctor_mDD20C9A3BA3C30C47653836F048F124D752EEDC9,
+	UnitySourceGeneratedAssemblyMonoScriptTypes_v1_Get_mBEB95BEB954BB63E9710BBC7AD5E78C4CB0A0033,
+	UnitySourceGeneratedAssemblyMonoScriptTypes_v1__ctor_mE70FB23ACC1EA12ABC948AA22C2E78B2D0AA39B1,
+};
+static const int32_t s_InvokerIndices[21] = 
+{
+	22607,
+	22607,
+	22607,
+	22607,
+	22607,
+	22607,
+	22607,
+	22607,
+	22607,
+	22607,
+	22607,
+	17152,
+	22607,
+	22607,
+	22607,
+	22607,
+	22607,
+	22607,
+	22607,
+	36694,
+	22607,
+};
+IL2CPP_EXTERN_C const Il2CppCodeGenModule g_AssemblyU2DCSharp_CodeGenModule;
+const Il2CppCodeGenModule g_AssemblyU2DCSharp_CodeGenModule = 
+{
+	"Assembly-CSharp.dll",
+	21,
+	s_methodPointers,
+	0,
+	NULL,
+	s_InvokerIndices,
+	0,
+	NULL,
+	0,
+	NULL,
+	0,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+};
